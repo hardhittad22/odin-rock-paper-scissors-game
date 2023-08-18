@@ -22,9 +22,6 @@
       }
     }
 
-    const computerSelection = computerChoice ();
-    console.log(computerSelection);
-
     /* A more complicated way of writing the above function:
     function getComputerChoice () {
       return Math.floor(Math.random() * 3); //returns a random integer from 0 to 2.
@@ -54,9 +51,6 @@
       }
     }
 
-    const userSelection = playerSelection();
-    console.log(userSelection);
-
     // Step 3: Invoke for comparison and return win or lose prompts
     function playRound (userSelection, computerSelection) {
       if (
@@ -64,7 +58,7 @@
       (userSelection === "paper" && computerSelection === "rock") ||
       (userSelection === "rock" && computerSelection === "scissors")
       ) {
-        return "You Win! " + `${userSelection} beats ${computerSelection}`;
+        return "You Win! " + `${userSelection} beats ${computerSelection}.`;
       } else if (
         (userSelection === "paper" && computerSelection === "scissors") || 
         (userSelection === "rock" && computerSelection === "paper") ||
@@ -102,9 +96,35 @@
     }
     */
 
-    const result = playRound (userSelection, computerSelection);
-    console.log(result);
+    // Step 4: Game of 5 rounds
+    function game () {
+      let userScore = 0;
+      let computerScore = 0;
+
+      for (let round = 1; round <= 5; ++round) {
+        const computerSelection = computerChoice ();
+        const userSelection = playerSelection();
+        
+        const result = playRound (userSelection, computerSelection);
+        console.log(result);
+
+        if (result.includes("win")) {
+          ++userScore;
+        } else if (result.includes("lose")) {
+          ++computerScore;
+        }
+      }
+
+        if (userScore > computerScore) {
+          return "You've won the game!";
+        } else if (userScore < computerScore) {
+          return "You've lost the game!";
+        } else {
+          return "It's a tie game!";
+        }
+    }
     
+    console.log(game());
   </script>
 </body>
 </html>
