@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Page Title</title>
+</head>
+<body>
+  <button class = rock>Rock</button>
+  <button class = scissors>Scissors</button>
+  <button class = paper>Paper</button>
+  <div class = gameresult></div>
+  <div class="score"></div>
+  <script>
+    let userScore = 0;
+    let computerScore = 0;
+    // Step 1: Computer will randomly return "Rock, Paper, or Scissors" strings.
+    function computerChoice () {
+      let randomValue = Math.floor(Math.random() * 3);
+      switch (randomValue) {
+        case 0:
+          return "rock";
+          break;
+        case 1:
+          return "paper";
+          break;
+        case 2:
+          return "scissors";
+          break;
+      }
+    }
+
+    /* A more complicated way of writing the above function:
+    function getComputerChoice () {
+      return Math.floor(Math.random() * 3); //returns a random integer from 0 to 2.
+    }
+    
+    function playRound (computerSelection) {
+      if (computerSelection === 0) {
+        return "rock";
+      } else if (computerSelection === 1) {
+        return "paper";
+      } else if (computerSelection === 2) {
+        return "scissors";
+      }
+    }
+    */
+
+    // Step 2: Human Player will place in option in as prompt. Be sure to include Upper- and Lower- case conditions.
+    function playerSelection () {
+      const playerInput = prompt("Choose Rock, Paper, or Scissors");
+      const playerChoice = playerInput.toLowerCase();
+      
+      if (playerChoice === "rock" || playerChoice === "paper" || playerChoice === "scissors") {
+        return playerChoice;
+      } else {
+        alert("Invalid choice. Please select rock, paper, or scissors");
+        return playerSelection();
+      }
+    }
+
+    // Step 3: Invoke for comparison and return win or lose prompts
+    function playRound (userSelection, computerSelection) {
+
+      if (
+      (userSelection === "scissors" && computerSelection === "paper") || 
+      (userSelection === "paper" && computerSelection === "rock") ||
+      (userSelection === "rock" && computerSelection === "scissors")
+      ) {
+        return "You Win! " + `${userSelection} beats ${computerSelection}.`;
+      } else if (
+        (userSelection === "paper" && computerSelection === "scissors") || 
+        (userSelection === "rock" && computerSelection === "paper") ||
+        (userSelection === "scissors" && computerSelection === "rock")
+        ) {
+        return "You lose! " + `${computerSelection} beats ${userSelection}.`;
+      } else {
+        return "It's a tie! Try again.";
+      }
+    }
+
+    /* Alternate via Google but does not return correctly.
+    function playRound (computerSelection, userSelection) {
+        if (userSelection === computerSelection) {
+          return "It's a tie!";
+        } else if (userSelection === "rock") {
+          if (computerSelection === "paper") {
+            return "You lose! ${computerSelection} beats ${userSelection}.";
+          } else {
+            return "You Win! ${userSelection} beats ${computerSelection}.";
+          }
+        } else if (userSelection === "paper") {
+          if (computerSelection === "scissors") {
+            return "You lose! ${computerSelection} beats ${userSelection}.";
+          } else {
+            return "You Win! ${userSelection} beats ${computerSelection}.";
+          }
+        } else if (playerSelection === "scissors") {
+          if (computerSelection === "rock") {
+            return "You lose! ${computerSelection} beats ${userSelection}.";
+          } else {
+            return "You Win! ${userSelection} beats ${computerSelection}.";
+          }
+        }
+    }
+    */
+
+    // Step 4: Game of 5 rounds
+    /* function game () {
+      let userScore = 0;
+      let computerScore = 0;
+
+      for (let round = 1; round <= 5; ++round) {
+        const computerSelection = computerChoice ();
+        const userSelection = playerSelection();
+        
+        const result = playRound (userSelection, computerSelection);
+        console.log(result);
+
+        if (result.includes("win")) {
+          userScore++;
+        } else if (result.includes("lose")) {
+          computerScore++;
+        }
+      }
+
+        if (userScore > computerScore) {
+          return "You've won the game!";
+        } else if (userScore < computerScore) {
+          return "You've lost the game!";
+        } else {
+          return "It's a tie game!";
+        }
+    }
+
+    console.log(game());
+    */
+
+    function updateScoreDisplay() {
+      const scoreDisplay = document.querySelector('.score');
+      scoreDisplay.textContent = `Your Score: ${userScore} | Computer Score: ${computerScore}`;
+    }
+
+    function announceWinner() {
+      const gameResultDisplay = document.querySelector('.gameresult');
+      if (userScore > computerScore) {
+        gameResultDisplay.textContent = "Congratulations! You've won the game!";
+      } else if (userScore < computerScore) {
+        gameResultDisplay.textContent = "Oops! Computer wins the game!";
+      } else {
+        gameResultDisplay.textContent = "It's a tie game!";
+      }
+    }
+
+    function buttonClick(event) {
+      const userSelection = event.target.textContent.toLowerCase();
+      const computerSelection = computerChoice();
+      const result = playRound(userSelection, computerSelection);
+
+      if (result.includes("win")) {
+          userScore++;
+      } else if (result.includes("lose")) {
+          computerScore++;
+      }
+
+      const gameResultDisplay = document.querySelector('.gameresult');
+      gameResultDisplay.textContent = result;
+
+      updateScoreDisplay();
+      
+      if (userScore === 5 || computerScore === 5) {
+        announceWinner();
+      }
+    }
+
+    const rockButton = document.querySelector('.rock');
+    rockButton.addEventListener('click', buttonClick);
+    const paperButton = document.querySelector('.paper');
+    paperButton.addEventListener('click', buttonClick);
+    const scissorsButton = document.querySelector('.scissors');
+    scissorsButton.addEventListener('click', buttonClick);
+
+    updateScoreDisplay();
+
+  </script>
+</body>
+</html>
